@@ -1,4 +1,4 @@
-module github.com/Tolyar/gocloak v88.0.1
+module github.com/Tolyar/gocloak/v88 v88.0.2
 
 go 1.15
 
