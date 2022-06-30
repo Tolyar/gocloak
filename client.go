@@ -1443,13 +1443,7 @@ func (client *gocloak) GetComponents(ctx context.Context, token, realm string) (
 func (client *gocloak) GetComponentsWithParams(ctx context.Context, token, realm string, params GetComponentsParams) ([]*Component, error) {
 	const errMessage = "could not get components"
 	var result []*Component
-	var componentURL string
 
-	if *params.ID != "" {
-		componentURL = fmt.Sprintf("components/%s", *params.ID)
-	} else {
-		componentURL = "components"
-	}
 	queryParams, err := GetQueryParams(params)
 	if err != nil {
 		return nil, errors.Wrap(err, errMessage)
@@ -1457,6 +1451,24 @@ func (client *gocloak) GetComponentsWithParams(ctx context.Context, token, realm
 	resp, err := client.getRequestWithBearerAuth(ctx, token).
 		SetResult(&result).
 		SetQueryParams(queryParams).
+		Get(client.getAdminRealmURL(realm, "components"))
+
+	if err := checkForError(resp, err, errMessage); err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+// GetComponent get exactly one component by ID
+func (client *gocloak) GetComponent(ctx context.Context, token, realm string, componentID string) (*Component, error) {
+	const errMessage = "could not get components"
+	var result *Component
+
+	componentURL := fmt.Sprintf("components/%s", componentID)
+
+	resp, err := client.getRequestWithBearerAuth(ctx, token).
+		SetResult(&result).
 		Get(client.getAdminRealmURL(realm, componentURL))
 
 	if err := checkForError(resp, err, errMessage); err != nil {
