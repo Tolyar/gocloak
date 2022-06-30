@@ -32,13 +32,13 @@ For release notes please consult the specific releases [here](https://github.com
 ### Installation
 
 ```shell
-go get github.com/Tolyar/gocloak/v88
+go get github.com/Tolyar/gocloak
 ```
 
 ### Importing
 
 ```go
- import "github.com/Tolyar/gocloak/v88"
+ import "github.com/Tolyar/gocloak"
 ```
 
 ### Create New User
