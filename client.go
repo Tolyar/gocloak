@@ -3882,3 +3882,19 @@ func (client *gocloak) DeleteClientScopesScopeMappingsClientRoles(ctx context.Co
 
 	return checkForError(resp, err, errMessage)
 }
+
+// Control UserStorageProvider via POST /{realm}/user-storage/{id}. Run some actions.
+func (client *gocloak) UserStorageAction(ctx context.Context, token, realm string, id string, action string, params map[string]string) error {
+	const errMessage = "could not execute action for storage provider"
+
+	queryParams, err := GetQueryParams(params)
+	if err != nil {
+		return errors.Wrap(err, errMessage)
+	}
+
+	resp, err := client.getRequestWithBearerAuth(ctx, token).
+		SetQueryParams(queryParams).
+		Post(client.getAdminRealmURL(realm, "user-storage", id, action))
+
+	return checkForError(resp, err, errMessage)
+}
