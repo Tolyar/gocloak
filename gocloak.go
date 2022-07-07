@@ -495,6 +495,8 @@ type GoCloak interface {
 	// DeleteResourcePolicy deletes a permission for a specifc resource, using token obtained by Resource Owner Password Credentials Grant or Token exchange
 	DeleteResourcePolicy(ctx context.Context, token, realm, permissionID string) error
 
+	UserStorageAction(ctx context.Context, token, realm string, id string, action string, params map[string]string) error
+
 	// ---------------
 	// Credentials API
 	// ---------------
